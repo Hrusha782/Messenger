@@ -1,0 +1,145 @@
+<!-- templates/chat.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мой Мессенджер</title>
+    <style>
+        body { font-family: Arial; margin: 0; padding: 0; display: flex; height: 100vh; }
+        #sidebar {
+            width: 280px;
+            background: #f5f5f5;
+            padding: 15px;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+        }
+        #sidebar h3 { margin-top: 0; font-size: 18px; }
+        .chat-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .chat-item:hover { background: #e9e9e9; }
+        .chat-item.active { background: #007bff; color: white; }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: gray;
+            margin-left: auto;
+        }
+        .status-online { background: #28a745 !important; }
+        #main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        #chat-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            font-size: 18px;
+            background: #fafafa;
+        }
+        #chat {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #fff;
+        }
+        #typing-indicator {
+            padding: 8px 20px;
+            font-style: italic;
+            color: #666;
+            background: #fafafa;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+        }
+        #input-area {
+            display: flex;
+            padding: 12px;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+        #message {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+        #message:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+        }
+        #send {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #send:hover {
+            background: #0056b3;
+        }
+        .user-info {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 14px;
+        }
+        .user-info a {
+            display: block;
+            color: #007bff;
+            text-decoration: none;
+            margin: 5px 0;
+        }
+        .user-info a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" style="width:100%; height:100%; display:flex;">
+        <div id="sidebar">
+            <h3>Чаты</h3>
+            <div id="chat-list">
+                <div class="chat-item active" data-chat-id="global">
+                    👥 Общий чат
+                    <span class="status-dot status-online"></span>
+                </div>
+            </div>
+
+            <div class="user-info">
+                <div><strong>Вы:</strong> <span id="current-username">{{ username }}</span></div>
+                <div><strong>Статус:</strong> <span id="user-status">🌐 онлайн</span></div>
+                <a href="/profile/{{ username }}?username={{ username }}">⚙️ Мой профиль</a>
+                <a href="/friends?username={{ username }}">👥 Мои друзья</a>
+            </div>
+        </div>
+
+        <div id="main">
+            <div id="chat-header">👥 Общий чат</div>
+            <div id="chat"><em>Загрузка...</em></div>
+            <div id="typing-indicator">Никто не печатает...</div>
+            <div id="input-area">
+                <input type="text" id="message" placeholder="Введите сообщение" autocomplete="off" />
+                <button id="send">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+    <script>
+        const username = "{{ username }}";
+        document.getElementById('current-username').textContent = username;
+    </script>
+</body>
+</html>

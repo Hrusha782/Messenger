@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+websockets
+sqlalchemy
+python-dotenv
+jinja2
+bcrypt

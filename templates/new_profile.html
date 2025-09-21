@@ -1,0 +1,35 @@
+<!-- templates/view_profile.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Профиль {{ profile.username }}</title>
+    <style>
+        body { font-family: Arial; max-width: 500px; margin: 50px auto; padding: 20px; }
+        .profile-card { text-align: center; }
+        .avatar { width: 120px; height: 120px; border-radius: 50%; margin: 20px auto; }
+        .username { font-size: 24px; font-weight: bold; }
+        .bio { margin: 20px 0; font-size: 16px; line-height: 1.5; }
+        .back { display: block; margin-top: 20px; color: #007bff; text-decoration: none; }
+        .edit-btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="profile-card">
+        <img src="{{ profile.avatar_url }}" class="avatar" onerror="this.src='/static/default-avatar.png'">
+        <div class="username">{{ profile.username }}</div>
+        <div class="bio">
+            {% if profile.bio %}
+                {{ profile.bio }}
+            {% else %}
+                <em>Пользователь не добавил описание</em>
+            {% endif %}
+        </div>
+
+        {% if is_self %}
+            <button class="edit-btn" onclick="location.href='/edit_profile?username={{ viewer }}'">✏️ Редактировать профиль</button>
+        {% endif %}
+
+        <a href="/friends?username={{ viewer }}" class="back">← Мои друзья</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!-- templates/profile.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Профиль</title>
+    <style>
+        body { font-family: Arial; max-width: 500px; margin: 50px auto; padding: 20px; }
+        .card { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .code { font-size: 24px; font-weight: bold; letter-spacing: 3px; color: #007bff; }
+        .form-group { margin: 15px 0; }
+        input, button { padding: 10px; width: 100%; box-sizing: border-box; margin: 5px 0; }
+        button { background: #28a745; color: white; border: none; cursor: pointer; }
+        button:hover { background: #218838; }
+        .back { display: block; margin-top: 20px; color: #007bff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Ваш профиль</h2>
+        <p><strong>Имя:</strong> {{ username }}</p>
+        <p><strong>Ваш код для добавления в друзья:</strong></p>
+        <div class="code">{{ friend_code }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Добавить друга</h3>
+        <form method="post" action="/api/add_friend">
+            <input type="hidden" name="username" value="{{ username }}">
+            <div class="form-group">
+                <input type="text" name="friend_code" placeholder="Введите код друга" required>
+            </div>
+            <button type="submit">Добавить в друзья</button>
+        </form>
+    </div>
+
+    <a href="/chat?username={{ username }}" class="back">← Вернуться в чат</a>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/api/add_friend', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.error) {
+                alert(result.error);
+            } else {
+                alert(`Добавлен друг: ${result.friend}!`);
+                window.location.href = `/chat?username={{ username }}`;
+            }
+        });
+    </script>
+</body>
+</html>

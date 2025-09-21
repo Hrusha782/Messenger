@@ -1,0 +1,44 @@
+<!-- templates/friends.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мои друзья</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 30px auto; }
+        .friend-card {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .friend-card:hover { background: #f9f9f9; }
+        .avatar { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; }
+        .info { flex: 1; }
+        .name { font-weight: bold; }
+        .bio { font-size: 14px; color: #666; }
+        .back { display: block; margin: 20px 0; color: #007bff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h2>Мои друзья</h2>
+
+    {% if friends %}
+        {% for friend in friends %}
+            <div class="friend-card" onclick="location.href='/profile/{{ friend.username }}?username={{ username }}'">
+                <img src="{{ friend.avatar_url }}" class="avatar" onerror="this.src='/static/default-avatar.png'">
+                <div class="info">
+                    <div class="name">{{ friend.username }}</div>
+                    <div class="bio">{{ friend.bio if friend.bio else "Нет описания" }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>У вас пока нет друзей. Добавьте кого-нибудь по коду!</p>
+    {% endif %}
+
+    <a href="/chat?username={{ username }}" class="back">← Вернуться в чат</a>
+</body>
+</html>
