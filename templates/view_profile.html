@@ -9,14 +9,26 @@
         .avatar { width: 120px; height: 120px; border-radius: 50%; margin: 20px auto; }
         .username { font-size: 24px; font-weight: bold; }
         .bio { margin: 20px 0; font-size: 16px; line-height: 1.5; }
+        .friend-code { 
+            font-size: 18px; 
+            font-weight: bold; 
+            color: #007bff; 
+            letter-spacing: 2px;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f0f7ff;
+            border-radius: 5px;
+        }
         .back { display: block; margin-top: 20px; color: #007bff; text-decoration: none; }
-        .edit-btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .edit-btn { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 10px 5px; }
+        .chat-btn { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 10px 5px; }
     </style>
 </head>
 <body>
     <div class="profile-card">
         <img src="{{ profile.avatar_url }}" class="avatar" onerror="this.src='/static/default-avatar.png'">
         <div class="username">{{ profile.username }}</div>
+        <div class="friend-code">Код: {{ profile.friend_code }}</div>
         <div class="bio">
             {% if profile.bio %}
                 {{ profile.bio }}
@@ -27,9 +39,19 @@
 
         {% if is_self %}
             <button class="edit-btn" onclick="location.href='/edit_profile?username={{ viewer }}'">✏️ Редактировать профиль</button>
+        {% else %}
+            <button class="chat-btn" onclick="startChatWith('{{ profile.username }}')">💬 Написать сообщение</button>
         {% endif %}
 
         <a href="/friends?username={{ viewer }}" class="back">← Мои друзья</a>
     </div>
+
+    <script>
+        function startChatWith(username) {
+            const current = "{{ viewer }}";
+            const chatId = [current, username].sort().join(":");
+            location.href = `/chat?username=${current}#${chatId}`;
+        }
+    </script>
 </body>
 </html>
